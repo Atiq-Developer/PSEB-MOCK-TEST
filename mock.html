@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PSEB Digital IC Design & Verification — Mega Quiz</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: linear-gradient(135deg, #f5f0e8 0%, #e8e2d5 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #2c2c2c;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+      }
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 20px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      .tag {
+        padding: 8px 18px;
+        border: 1px solid #bbb;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #444;
+        background: #fafafa;
+      }
+      .btn {
+        display: block;
+        margin: 20px auto;
+        padding: 14px 40px;
+        font-size: 16px;
+        background: #1a1a1a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .btn:hover {
+        background: #333;
+        transform: translateY(-2px);
+      }
+      .btn:disabled {
+        background: #999;
+        cursor: not-allowed;
+      }
+      .hidden {
+        display: none;
+      }
+      .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eee;
+      }
+      .progress {
+        font-weight: 600;
+        color: #444;
+      }
+      .timer {
+        font-weight: 600;
+        color: #d9534f;
+        font-size: 18px;
+      }
+      .category {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #eef2ff;
+        color: #3b4cca;
+        border-radius: 12px;
+        font-size: 12px;
+        margin-bottom: 15px;
+      }
+      .question {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-weight: 500;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .option {
+        padding: 14px 18px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+        background: #fff;
+        font-size: 15px;
+      }
+      .option:hover:not(.disabled) {
+        border-color: #3b4cca;
+        background: #f7f9ff;
+      }
+      .option.correct {
+        border-color: #28a745;
+        background: #e8f5e9;
+        color: #155724;
+      }
+      .option.wrong {
+        border-color: #dc3545;
+        background: #fdecea;
+        color: #721c24;
+      }
+      .option.disabled {
+        cursor: not-allowed;
+      }
+      .explanation {
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: 10px;
+        background: #fff8e1;
+        border-left: 4px solid #f5a623;
+        display: none;
+      }
+      .explanation.show {
+        display: block;
+      }
+      .explanation h4 {
+        margin-bottom: 8px;
+        color: #a15c00;
+      }
+      .explanation p {
+        line-height: 1.6;
+        color: #333;
+      }
+      .nav {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 25px;
+      }
+      .score-box {
+        text-align: center;
+        padding: 30px;
+        background: #f4f7ff;
+        border-radius: 12px;
+        margin: 20px 0;
+      }
+      .score-box h2 {
+        font-size: 42px;
+        color: #3b4cca;
+      }
+      .review-item {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border-left: 4px solid #ccc;
+        background: #fafafa;
+      }
+      .review-item.correct {
+        border-left-color: #28a745;
+      }
+      .review-item.wrong {
+        border-left-color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- START SCREEN -->
+      <div id="startScreen">
+        <h1>PSEB Digital IC Design & Verification — Mega Quiz</h1>
+        <p class="subtitle">
+          60 hard MCQs covering all topics<br />60 minutes · NTS/HEC style ·
+          Detailed explanations
+        </p>
+        <div class="tags">
+          <span class="tag">Digital Logic Design</span>
+          <span class="tag">Programming Concepts</span>
+          <span class="tag">Data Structures</span>
+          <span class="tag">Computer Architecture</span>
+          <span class="tag">Analytical Reasoning</span>
+        </div>
+        <button class="btn" onclick="startQuiz()">Start Test ↗</button>
+      </div>
+
+      <!-- QUIZ SCREEN -->
+      <div id="quizScreen" class="hidden">
+        <div class="header-bar">
+          <div class="progress" id="progress">Question 1 / 60</div>
+          <div class="timer" id="timer">⏱ 60:00</div>
+        </div>
+        <div class="category" id="category"></div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="explanation" id="explanation">
+          <h4 id="explainTitle"></h4>
+          <p id="explainText"></p>
+        </div>
+        <div class="nav">
+          <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>
+            Next →
+          </button>
+        </div>
+      </div>
+
+      <!-- RESULT SCREEN -->
+      <div id="resultScreen" class="hidden">
+        <h1>Quiz Completed 🎉</h1>
+        <div class="score-box">
+          <p>Your Score</p>
+          <h2 id="finalScore">0 / 60</h2>
+          <p id="percentage"></p>
+        </div>
+        <h3 style="margin-bottom: 15px">Review</h3>
+        <div id="reviewList"></div>
+        <button class="btn" onclick="location.reload()">Restart Quiz</button>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        // ===== DIGITAL LOGIC DESIGN =====
+        {
+          c: "Digital Logic Design",
+          q: "Two's complement overflow in n-bit addition occurs when:",
+          o: [
+            "Carry out of MSB = 1",
+            "Sum MSB differs from both input MSBs when input MSBs differ",
+            "Inputs have same sign and sum has different sign",
+            "Inputs have different sign and sum has same sign",
+          ],
+          a: 2,
+          e: "Overflow in signed (2's complement) addition happens only when BOTH operands have the SAME sign but the result has a DIFFERENT sign. Example: +7 + +3 in 4-bit = 0111 + 0011 = 1010 (looks like −6). Carry out alone is NOT an indicator of signed overflow.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "For a 4-to-1 MUX with select lines S1 S0, output is:",
+          o: [
+            "Y = S1S0·I0 + S1S0'·I1 + S1'S0·I2 + S1'S0'·I3",
+            "Y = S1'S0'·I0 + S1'S0·I1 + S1S0'·I2 + S1S0·I3",
+            "Y = S1·I0 + S0·I1 + S1'·I2 + S0'·I3",
+            "Y = I0 + I1 + I2 + I3",
+          ],
+          a: 1,
+          e: "In a 4:1 MUX, S1S0=00 selects I0, 01→I1, 10→I2, 11→I3. So Y = S1'S0'I0 + S1'S0 I1 + S1S0' I2 + S1S0 I3.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "Minimal SOP for F(A,B,C)= Σm(1,3,5,7) is:",
+          o: ["F = C", "F = A ⊕ B", "F = B'", "F = A + C"],
+          a: 0,
+          e: "Minterms 1,3,5,7 all have C=1 (odd minterms). In K-map, the entire C=1 column is 1. So F = C.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "A circuit has output 1 when the number of 1s in inputs is odd. It is:",
+          o: ["XNOR", "XOR (parity)", "NAND", "NOR"],
+          a: 1,
+          e: "XOR (odd-parity) outputs 1 when an ODD number of inputs are 1. XNOR is even-parity.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "In a synchronous sequential circuit, the state changes:",
+          o: [
+            "Whenever inputs change",
+            "On clock edge only",
+            "When reset is inactive only",
+            "At any time except clock edge",
+          ],
+          a: 1,
+          e: "Synchronous means all flip-flops update ONLY on the active clock edge — that's the defining property versus asynchronous circuits.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "In a JK flip-flop, when J=K=1:",
+          o: ["Hold", "Reset", "Set", "Toggle"],
+          a: 3,
+          e: "JK table: 00=hold, 01=reset, 10=set, 11=toggle. This toggle feature is the main advantage over SR flip-flop.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "Hazard mostly occurs due to:",
+          o: [
+            "Ideal zero-delay gates",
+            "Unequal propagation delays along paths",
+            "Using K-maps",
+            "Using flip-flops",
+          ],
+          a: 1,
+          e: "Static/dynamic hazards occur because different signal paths have different propagation delays, causing brief unwanted glitches.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "Convert decimal 13.625 to binary:",
+          o: ["1101.101", "1101.011", "1011.101", "1100.101"],
+          a: 0,
+          e: "13 = 1101. 0.625 = 0.5 + 0.125 = .101 (binary). So 13.625 = 1101.101.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "Gray code of binary 101101 is:",
+          o: ["111011", "111111", "110011", "100111"],
+          a: 0,
+          e: "Gray code: MSB same, then each bit = XOR of two adjacent binary bits. 1 0 1 1 0 1 → 1, 1⊕0=1, 0⊕1=1, 1⊕1=0, 1⊕0=1, 0⊕1=1 → 111011.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "If you implement a full adder using two half adders, the missing component is:",
+          o: ["XOR gate", "AND gate", "OR gate", "NAND gate"],
+          a: 2,
+          e: "Two half-adders produce two carries. These carries are OR-ed together to give the full adder's final carry-out.",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "A 3-bit ripple counter built with T flip-flops has modulus:",
+          o: ["3", "6", "8", "9"],
+          a: 2,
+          e: "An n-bit counter has modulus 2^n. So 3-bit → 2^3 = 8 (counts 0 to 7).",
+        },
+        {
+          c: "Digital Logic Design",
+          q: "For De Morgan's law, (A + B)' equals:",
+          o: ["A' + B'", "A'B'", "AB", "(A' + B)'"],
+          a: 1,
+          e: "De Morgan: (A+B)' = A'·B'  and  (AB)' = A' + B'. Break the bar, change the sign.",
+        },
+
+        // ===== PROGRAMMING CONCEPTS =====
+        {
+          c: "Programming Concepts",
+          q: "Time complexity of binary search (worst-case) is:",
+          o: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+          a: 1,
+          e: "Binary search halves the search space each step → log₂(n) steps worst case.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "In C/C++, what does 'static' inside a function do?",
+          o: [
+            "Variable allocated on stack every call",
+            "Variable retains value between calls",
+            "Variable becomes global and public",
+            "Variable becomes constant",
+          ],
+          a: 1,
+          e: "A 'static' local variable is stored in the data segment (not stack), initialized once, and keeps its value across function calls.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "Which is true about recursion base case?",
+          o: [
+            "It improves speed always",
+            "It prevents infinite recursion",
+            "It increases stack size",
+            "It removes need for loops",
+          ],
+          a: 1,
+          e: "Every recursion MUST have a base case; otherwise recursion never terminates → stack overflow.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "Consider: for(i=0; i<n; i*=2) starting with i=0. What happens?",
+          o: ["Runs log n times", "Runs n times", "Infinite loop", "Runs once"],
+          a: 2,
+          e: "0 * 2 = 0 forever, so i never becomes ≥ n. This is an infinite loop. Typical log-n pattern starts from 1, not 0.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "Short-circuit evaluation in 'A && B' means:",
+          o: [
+            "Always evaluate B first",
+            "Evaluate B only if A is true",
+            "Evaluate B only if A is false",
+            "Evaluate both always",
+          ],
+          a: 1,
+          e: "In A && B, if A is false, result is already false — B is skipped. This avoids errors like null-pointer dereference.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "In OOP, 'encapsulation' primarily means:",
+          o: [
+            "Multiple inheritance",
+            "Wrapping data + methods and controlling access",
+            "Overloading operators",
+            "Code in multiple files",
+          ],
+          a: 1,
+          e: "Encapsulation = bundling data + methods, and hiding internal details via access modifiers (private/protected/public).",
+        },
+        {
+          c: "Programming Concepts",
+          q: "What is undefined behavior in C (example)?",
+          o: [
+            "int x=5;",
+            "Accessing array out of bounds",
+            "Printing a string",
+            "Using for loop",
+          ],
+          a: 1,
+          e: "Out-of-bounds array access is classic UB — compiler is free to do anything (crash, corrupt data, 'work' by chance).",
+        },
+        {
+          c: "Programming Concepts",
+          q: "Which one guarantees mutual exclusion?",
+          o: [
+            "Semaphore initialized to 2",
+            "Mutex lock",
+            "Non-blocking IO",
+            "Cache",
+          ],
+          a: 1,
+          e: "A mutex allows only ONE thread in the critical section at a time. A binary semaphore can also do it, but a semaphore initialized to 2 allows TWO threads — not mutual exclusion.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "A function 'int f(int* p)' can modify caller's integer if called as f(&x) because:",
+          o: [
+            "p stores copy of x",
+            "p stores address of x",
+            "p stores reference count",
+            "p stores x in register",
+          ],
+          a: 1,
+          e: "Pass-by-address: p holds the memory address of x, so *p modifies the original variable.",
+        },
+        {
+          c: "Programming Concepts",
+          q: "In Python, list.append(x) is usually:",
+          o: ["O(n) always", "O(1) amortized", "O(log n)", "O(n log n)"],
+          a: 1,
+          e: "Python lists use dynamic arrays with geometric growth. Most appends are O(1); occasional resize is O(n), but amortized cost is O(1).",
+        },
+        {
+          c: "Programming Concepts",
+          q: "Which statement about 'const int* p' in C++ is correct?",
+          o: [
+            "p is constant pointer to int",
+            "*p can't be modified via p, but p can point elsewhere",
+            "p can't point elsewhere",
+            "both p and *p are const",
+          ],
+          a: 1,
+          e: "'const int* p' = pointer to const int. You can't modify *p, but you CAN make p point to a different address. Compare with 'int* const p' (constant pointer).",
+        },
+        {
+          c: "Programming Concepts",
+          q: "In compiling, which phase builds symbol table + checks types?",
+          o: [
+            "Lexical analysis only",
+            "Syntax analysis only",
+            "Semantic analysis",
+            "Code generation",
+          ],
+          a: 2,
+          e: "Semantic analysis verifies meaning: type checking, scope resolution, symbol table population. Lexical=tokens, Syntax=parse tree.",
+        },
+
+        // ===== DATA STRUCTURES =====
+        {
+          c: "Data Structures",
+          q: "A stack follows:",
+          o: ["FIFO", "LIFO", "Random", "Priority"],
+          a: 1,
+          e: "Stack = Last-In-First-Out. The last element pushed is the first one popped.",
+        },
+        {
+          c: "Data Structures",
+          q: "Which DS is best to implement BFS?",
+          o: ["Stack", "Queue", "Heap", "Hash table"],
+          a: 1,
+          e: "BFS explores level by level → FIFO order → Queue. (DFS uses Stack.)",
+        },
+        {
+          c: "Data Structures",
+          q: "Worst-case search in a balanced BST is:",
+          o: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+          a: 1,
+          e: "Balanced BST (AVL, Red-Black) has height O(log n), so search = O(log n). Unbalanced BST can degrade to O(n).",
+        },
+        {
+          c: "Data Structures",
+          q: "For a max-heap, which is always true?",
+          o: [
+            "Root is smallest",
+            "Parent ≥ children",
+            "Heap is fully sorted",
+            "Inorder traversal gives sorted order",
+          ],
+          a: 1,
+          e: "Max-heap property: every parent ≥ its children. Root is the maximum. Heap is NOT fully sorted.",
+        },
+        {
+          c: "Data Structures",
+          q: "Collision resolution technique in hashing:",
+          o: ["Merge sort", "Chaining", "BFS", "AVL rotations"],
+          a: 1,
+          e: "Common collision resolutions: Chaining (linked list per bucket) and Open Addressing (linear/quadratic probing, double hashing).",
+        },
+        {
+          c: "Data Structures",
+          q: "In a singly linked list, deletion of a node when pointer to previous node is available is:",
+          o: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+          a: 0,
+          e: "With prev pointer: prev->next = prev->next->next; — constant time O(1). Without prev, you'd need O(n) to find it.",
+        },
+        {
+          c: "Data Structures",
+          q: "Which traversal of BST yields sorted keys?",
+          o: ["Preorder", "Postorder", "Inorder", "Level order"],
+          a: 2,
+          e: "Inorder traversal (Left → Root → Right) of a BST visits nodes in ascending order by key.",
+        },
+        {
+          c: "Data Structures",
+          q: "For graph with V vertices and E edges, adjacency list space is:",
+          o: ["O(V^2)", "O(E)", "O(V+E)", "O(log V)"],
+          a: 2,
+          e: "Adjacency list stores V vertex slots + E edges total → O(V + E). Adjacency matrix is O(V²).",
+        },
+        {
+          c: "Data Structures",
+          q: "Dijkstra fails when:",
+          o: [
+            "Graph is directed",
+            "Negative weight edges exist",
+            "Graph is sparse",
+            "Graph has cycles",
+          ],
+          a: 1,
+          e: "Dijkstra assumes once a node's distance is finalized, it won't decrease. Negative edges break this assumption. Use Bellman-Ford for negative edges.",
+        },
+        {
+          c: "Data Structures",
+          q: "Which is stable sorting algorithm?",
+          o: [
+            "Quick sort (typical)",
+            "Heap sort",
+            "Merge sort",
+            "Selection sort",
+          ],
+          a: 2,
+          e: "Merge sort is stable (preserves relative order of equal keys). Quick, Heap, Selection are generally NOT stable.",
+        },
+        {
+          c: "Data Structures",
+          q: "Amortized analysis is used for:",
+          o: [
+            "Worst case only",
+            "Average case only",
+            "Sequence of operations average cost",
+            "Best case only",
+          ],
+          a: 2,
+          e: "Amortized analysis averages cost over a SEQUENCE of operations — e.g., dynamic array append is O(1) amortized even though some ops are O(n).",
+        },
+        {
+          c: "Data Structures",
+          q: "In union-find (DSU), path compression improves:",
+          o: [
+            "Memory usage",
+            "Find operation efficiency",
+            "Sorting stability",
+            "Tree traversal order",
+          ],
+          a: 1,
+          e: "Path compression flattens the tree during find(), making future find() operations near O(1) amortized (with union by rank, almost O(α(n))).",
+        },
+
+        // ===== COMPUTER ARCHITECTURE =====
+        {
+          c: "Computer Architecture",
+          q: "CPI stands for:",
+          o: [
+            "Cycles per Instruction",
+            "Instructions per Cycle",
+            "Cost per Interrupt",
+            "Cache per Instruction",
+          ],
+          a: 0,
+          e: "CPI = Cycles Per Instruction. Execution time = Instructions × CPI × Cycle time.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "If a CPU has clock rate 2 GHz and executes 1×10^9 instructions with CPI=2, execution time:",
+          o: ["0.25 s", "0.5 s", "1 s", "2 s"],
+          a: 2,
+          e: "Time = (Instructions × CPI) / Clock rate = (1e9 × 2) / 2e9 = 1 second.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "In a 5-stage pipeline (IF, ID, EX, MEM, WB), data hazard can be reduced by:",
+          o: [
+            "Increasing clock frequency only",
+            "Forwarding/bypassing",
+            "Larger cache only",
+            "Using microcode only",
+          ],
+          a: 1,
+          e: "Forwarding (bypassing) passes ALU results directly to the next dependent instruction without waiting for WB — eliminating many RAW hazards.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "Write-back cache means:",
+          o: [
+            "Every write updates main memory immediately",
+            "Cache writes memory only on eviction",
+            "Cache is bypassed on writes",
+            "Memory writes cache",
+          ],
+          a: 1,
+          e: "Write-back: data is written to cache only; memory is updated only when the dirty cache line is evicted. Write-through updates memory on every write.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "In set-associative cache, 'associativity' means:",
+          o: [
+            "Number of cache levels",
+            "Number of words per block",
+            "Number of lines per set",
+            "Total cache size",
+          ],
+          a: 2,
+          e: "k-way set associative → each set has k lines. A block can be placed in any of k lines within its assigned set.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "TLB is used to speed up:",
+          o: [
+            "Instruction decoding",
+            "Virtual-to-physical address translation",
+            "ALU operations",
+            "Branch prediction",
+          ],
+          a: 1,
+          e: "TLB (Translation Lookaside Buffer) caches recent virtual→physical page translations, avoiding full page-table walks.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "Little-endian means:",
+          o: [
+            "MSB stored at lowest address",
+            "LSB stored at lowest address",
+            "Sign bit stored separately",
+            "Bytes reversed only for floats",
+          ],
+          a: 1,
+          e: "Little-endian: least-significant byte at lowest address. Example: 0x12345678 stored as 78 56 34 12. x86 is little-endian.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "In IEEE-754 single precision, exponent bits are:",
+          o: ["6", "8", "10", "11"],
+          a: 1,
+          e: "Single precision (32-bit): 1 sign + 8 exponent + 23 mantissa. Double precision (64-bit): 1 + 11 + 52.",
+        },
+        {
+          c: "Computer Architecture",
+          q: "Amdahl's Law emphasizes:",
+          o: [
+            "Total speedup limited by non-improved fraction",
+            "Speedup always linear with cores",
+            "Cache miss rate independent",
+            "CPI always decreases",
+          ],
+          a: 0,
+          e: "Amdahl's Law: Speedup = 1 / ((1-P) + P/N). Even infinite cores can't speed up the serial fraction (1-P).",
+        },
+        {
+          c: "Computer Architecture",
+          q: "RISC typically favors:",
+          o: [
+            "Few simple instructions, fixed length",
+            "Many complex instructions, variable length",
+            "Microcoded only",
+            "No registers",
+          ],
+          a: 0,
+          e: "RISC = Reduced Instruction Set: small, simple, fixed-length instructions, heavy register use, load/store architecture (e.g., MIPS, ARM, RISC-V).",
+        },
+        {
+          c: "Computer Architecture",
+          q: "Which instruction addressing mode uses operand in instruction itself?",
+          o: ["Immediate", "Indirect", "Indexed", "Base+offset only"],
+          a: 0,
+          e: "Immediate addressing: the operand value is embedded directly in the instruction (e.g., ADDI R1, R2, #5).",
+        },
+        {
+          c: "Computer Architecture",
+          q: "Interrupts are primarily used to:",
+          o: [
+            "Speed ALU",
+            "Handle asynchronous events efficiently",
+            "Replace cache",
+            "Avoid context switching",
+          ],
+          a: 1,
+          e: "Interrupts let the CPU respond to asynchronous events (I/O, timer, hardware) without polling — efficient event-driven execution.",
+        },
+
+        // ===== ANALYTICAL =====
+        {
+          c: "Analytical Reasoning",
+          q: "If log₂(x)=5, then x equals:",
+          o: ["10", "25", "32", "64"],
+          a: 2,
+          e: "log₂(x) = 5 → x = 2⁵ = 32.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "A can do a work in 12 days, B in 18 days. Together time:",
+          o: ["6.5", "7.2", "7.5", "8"],
+          a: 1,
+          e: "Combined rate = 1/12 + 1/18 = 3/36 + 2/36 = 5/36 per day. Time = 36/5 = 7.2 days.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "If P(A)=0.7, P(B)=0.6 and independent, P(A∩B)=",
+          o: ["0.13", "0.42", "1.3", "0.65"],
+          a: 1,
+          e: "For independent events: P(A∩B) = P(A) × P(B) = 0.7 × 0.6 = 0.42.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "Next number: 2, 6, 12, 20, 30, ?",
+          o: ["40", "41", "42", "44"],
+          a: 2,
+          e: "Differences: 4, 6, 8, 10, 12 → next = 30 + 12 = 42. (Pattern: n(n+1))",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "A box has 5 red, 3 blue balls. Probability of drawing 2 reds without replacement:",
+          o: ["25/64", "5/14", "10/28", "5/8"],
+          a: 1,
+          e: "P = (5/8) × (4/7) = 20/56 = 5/14.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "If f(n)=f(n−1)+2 and f(1)=3, then f(10)=",
+          o: ["19", "21", "23", "25"],
+          a: 1,
+          e: "Arithmetic sequence: f(n) = 3 + (n-1)×2. f(10) = 3 + 9×2 = 21.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "Average age of 9 people is 20. If one person age 30 joins, new average (10 people):",
+          o: ["20", "21", "22", "23"],
+          a: 1,
+          e: "Total = 9×20 + 30 = 210. New average = 210/10 = 21.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "'All CPUs are fast. Some fast machines are cheap.' Which MUST be true?",
+          o: [
+            "Some CPUs are cheap",
+            "All cheap machines are CPUs",
+            "Some cheap machines are fast",
+            "No CPU is cheap",
+          ],
+          a: 2,
+          e: "Given: Some fast machines are cheap → equivalently, some cheap machines are fast (symmetric). Other options are NOT guaranteed by the premises.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "How many 3-bit strings have exactly two 1s?",
+          o: ["2", "3", "4", "6"],
+          a: 1,
+          e: "C(3,2) = 3. Strings: 110, 101, 011.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "If 3x − 7 = 11, then x =",
+          o: ["4", "5", "6", "7"],
+          a: 2,
+          e: "3x = 18 → x = 6.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "Sequence a_n = 2·a_{n-1}, a_1=1. Then a_6 =",
+          o: ["16", "24", "32", "64"],
+          a: 2,
+          e: "Geometric: a_n = 2^(n-1). a_6 = 2⁵ = 32.",
+        },
+        {
+          c: "Analytical Reasoning",
+          q: "Success probability 0.9 per trial. P(exactly 2 failures in 5 trials) =",
+          o: [
+            "C(5,2)(0.1)²(0.9)³",
+            "C(5,2)(0.9)²(0.1)³",
+            "(0.1)²(0.9)⁵",
+            "(0.9)²(0.1)⁵",
+          ],
+          a: 0,
+          e: "Binomial: P(k failures) = C(n,k)·p_fail^k · p_success^(n-k) = C(5,2)·(0.1)²·(0.9)³.",
+        },
+      ];
+
+      let current = 0;
+      let score = 0;
+      let answers = [];
+      let timerInterval;
+
+      function startQuiz() {
+        document.getElementById("startScreen").classList.add("hidden");
+        document.getElementById("quizScreen").classList.remove("hidden");
+        startTimer(60 * 60);
+        loadQuestion();
+      }
+
+      function startTimer(seconds) {
+        let remaining = seconds;
+        timerInterval = setInterval(() => {
+          const m = Math.floor(remaining / 60);
+          const s = remaining % 60;
+          document.getElementById("timer").textContent =
+            `⏱ ${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+          if (remaining <= 0) {
+            clearInterval(timerInterval);
+            finishQuiz();
+          }
+          remaining--;
+        }, 1000);
+      }
+
+      function loadQuestion() {
+        const q = questions[current];
+        document.getElementById("progress").textContent =
+          `Question ${current + 1} / ${questions.length}`;
+        document.getElementById("category").textContent = q.c;
+        document.getElementById("question").textContent =
+          `Q${current + 1}. ${q.q}`;
+        const optsDiv = document.getElementById("options");
+        optsDiv.innerHTML = "";
+        q.o.forEach((opt, idx) => {
+          const div = document.createElement("div");
+          div.className = "option";
+          div.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+          div.onclick = () => selectOption(idx, div);
+          optsDiv.appendChild(div);
+        });
+        document.getElementById("explanation").classList.remove("show");
+        document.getElementById("nextBtn").disabled = true;
+        document.getElementById("nextBtn").textContent =
+          current === questions.length - 1 ? "Finish ✓" : "Next →";
+      }
+
+      function selectOption(selectedIdx, divEl) {
+        const q = questions[current];
+        const allOpts = document.querySelectorAll(".option");
+        allOpts.forEach((el, i) => {
+          el.classList.add("disabled");
+          el.onclick = null;
+          if (i === q.a) el.classList.add("correct");
+          if (i === selectedIdx && selectedIdx !== q.a)
+            el.classList.add("wrong");
+        });
+
+        const correct = selectedIdx === q.a;
+        if (correct) score++;
+        answers.push({
+          q: q.q,
+          selected: selectedIdx,
+          correct: q.a,
+          isRight: correct,
+          e: q.e,
+          o: q.o,
+        });
+
+        const exp = document.getElementById("explanation");
+        document.getElementById("explainTitle").textContent = correct
+          ? "✅ Correct!"
+          : `❌ Incorrect. Correct answer: ${String.fromCharCode(65 + q.a)}`;
+        document.getElementById("explainText").textContent = q.e;
+        exp.classList.add("show");
+
+        document.getElementById("nextBtn").disabled = false;
+      }
+
+      function nextQuestion() {
+        current++;
+        if (current >= questions.length) {
+          finishQuiz();
+        } else {
+          loadQuestion();
+        }
+      }
+
+      function finishQuiz() {
+        clearInterval(timerInterval);
+        document.getElementById("quizScreen").classList.add("hidden");
+        document.getElementById("resultScreen").classList.remove("hidden");
+        document.getElementById("finalScore").textContent =
+          `${score} / ${questions.length}`;
+        const pct = ((score / questions.length) * 100).toFixed(1);
+        document.getElementById("percentage").textContent =
+          `Percentage: ${pct}%`;
+
+        const review = document.getElementById("reviewList");
+        review.innerHTML = "";
+        answers.forEach((a, i) => {
+          const div = document.createElement("div");
+          div.className = "review-item " + (a.isRight ? "correct" : "wrong");
+          const selLetter =
+            a.selected !== undefined
+              ? String.fromCharCode(65 + a.selected)
+              : "—";
+          const corrLetter = String.fromCharCode(65 + a.correct);
+          div.innerHTML = `<b>Q${i + 1}.</b> ${a.q}<br>
+      <small>Your answer: <b>${selLetter}</b> | Correct: <b>${corrLetter}</b></small><br>
+      <small style="color:#555;">${a.e}</small>`;
+          review.appendChild(div);
+        });
+      }
+    </script>
+  </body>
+</html>
